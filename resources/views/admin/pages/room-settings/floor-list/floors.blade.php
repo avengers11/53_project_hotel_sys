@@ -28,7 +28,7 @@
                             <div class="col-12">
                                 <div class="row mb-5">
                                     <button style="width: 100%" class="btn btn-success col-12">{{$item->name}}</button>
-                                    @for ($i = 0; $i <= $item->no_room; $i++)
+                                    @for ($i = 0; $i < $item->no_room; $i++)
                                         <button class="btn btn-out-dotted {{$btn}} btn-square col-xl-2 col-md-3 col-4">{{$item->st_room+$i}} No Room</button>
                                     @endfor
                                     {{-- <button class="btn btn-out-dotted btn-success btn-square">Success Button</button>

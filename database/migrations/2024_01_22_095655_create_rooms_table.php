@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('assign_room')->nullable();
             $table->integer('price')->nullable();
             $table->json('img')->nullable();
+            $table->string('cover')->nullable();
             $table->string('room_size')->nullable();
             $table->integer('bed_no')->nullable();
             $table->integer('bed_id')->nullable();

@@ -48,16 +48,18 @@
                                     <button style="width: 100%" class="btn btn-success col-12">{{$item->name}}</button>
                                     @for ($i = 0; $i < $item->no_room; $i++)
                                         <label class="btn btn-out-dotted {{$btn}} btn-square col-xl-2 col-md-3 col-6" for="room{{$i.$index}}">
+                                            @php
+                                                $roomData = $item->rooms->pluck('assign_room')->toArray();
+                                                $roomIds = $item->rooms->pluck('id')->toArray();
+                                                $flattenedArray = call_user_func_array('array_merge', $roomData);
+                                                $isCheck = in_array($item->st_room+$i, $flattenedArray) ? 'checked' : '';
+                                                $isDisabled = !in_array(request()->room, $roomIds) ? '' : 'disabled';
+                                            @endphp
 
-                                            @if(!empty(json_decode($item->rooms)))
-                                                @foreach ($item->rooms as $room)
-                                                    <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}" @if(in_array($item->st_room+$i, $room->assign_room)) checked @endif >
-                                                @endforeach
-                                            @else
-                                                <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}"  >
-                                            @endif
+                                            <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}" {{$isCheck}} {{$isDisabled}} >
 
-                                            {{$item->st_room+$i}} No Room
+                                            {{$item->st_room+$i}} No Room={{$isDisabled}}
+
                                         </label>
                                     @endfor
                                 </div>

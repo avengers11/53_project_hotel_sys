@@ -61,10 +61,7 @@
                                                     <tr role="row" class="odd">
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>
-                                                            @php
-                                                                $firstImage = !empty($item->img[0][0]) ? $item->img[0][0] : '';
-                                                            @endphp
-                                                            <img style="height: 3rem" src="{{asset('images/rooms/'.$firstImage)}}" alt="">
+                                                            <img style="height: 3rem" src="{{asset('images/rooms/'.$item->cover)}}" alt="">
                                                         </td>
                                                         <td>{{$item->title}}</td>
                                                         <td>{{$item->max_child}}</td>
@@ -73,8 +70,8 @@
                                                         <td>{{$item->bed_no}}</td>
                                                         <td>{{$item->bed_id}}</td>
                                                         <td>
-                                                            <a href="{{route('admin.customer.delete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
-                                                            <a href="{{route('admin.customer.update.view', ['id' => $item])}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>
+                                                            <a href="{{route('admin.room-settings.roomCategoryDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
+                                                            <a href="{{route('admin.room-settings.roomCategoryUpdate.view', ['room' => $item])}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

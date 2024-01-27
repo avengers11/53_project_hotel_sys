@@ -7,6 +7,8 @@ use App\Models\Floor;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+Use FIle;
 
 class AdminRoomSettingsController extends Controller
 {
@@ -24,7 +26,28 @@ class AdminRoomSettingsController extends Controller
         $floor->st_room = $request->st_room;
         $floor->save();
 
+        $roomIds = Room::latest()->pluck('id')->toArray();
+        $floor->rooms()->attach($roomIds);
+
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new floor!']);
+    }
+    // floorDelete
+    public function floorDelete(Floor $floor) {
+
+        $floor->delete();
+        $floor->rooms()->detach();
+
+        return back()->with(['st' => true, 'msg' => 'You are successfully deleted a floor!']);
+    }
+    // floorUpdate
+    public function floorUpdate(Request $request, Floor $floor) {
+
+        $floor->name = $request->name;
+        $floor->no_room = $request->no_room;
+        $floor->st_room = $request->st_room;
+        $floor->save();
+
+        return back()->with(['st' => true, 'msg' => 'You are successfully update a floor!']);
     }
     // floors
     public function floors() {
@@ -43,11 +66,53 @@ class AdminRoomSettingsController extends Controller
     public function roomCategoryAddView() {
         return view("admin.pages.room-settings.room-category.add");
     }
+    // roomCategoryUpdateView
+    public function roomCategoryUpdateView(Room $room) {
+        return view("admin.pages.room-settings.room-category.update")->with(compact('room'));
+    }
+    // roomCategoryUpdate
+    public function roomCategoryUpdate(Request $request, Room $room) {
+
+        $files = [];
+
+        // images 
+        if(!empty($request->img)){
+            foreach ($request->file('img') as $i=>$file) {
+                $fileName = time()."$i.".$file->getClientOriginalExtension();
+                $file->move(public_path('images/rooms'), $fileName);
+                $files[] = [
+                    $fileName,
+                ];
+            }
+
+            foreach ($room->img['0'] as $value) {
+                Storage::delete(public_path('images/rooms/'.$value));
+            }
+        }else{
+            $files = $room->img;
+        }
+
+        // cover img 
+        if(!empty($request->file('cover'))){
+            $file = $request->file('cover');
+            $coverImg = time()."-cover.".$file->getClientOriginalExtension();
+            $file->move(public_path('images/rooms'), $coverImg);
+            Storage::delete(public_path('images/rooms/'.$room->cover));
+        }else{
+            $files = $room->img;
+        }
+
+        // $floorIds = Floor::latest()->pluck('id')->toArray();
+        // $room->floors()->attach($floorIds);
+
+        // return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
+    }
     // roomCategoryAdd
     public function roomCategoryAdd(Request $request)
     {
         $files = [];
 
+        // images 
         foreach ($request->file('img') as $i=>$file) {
             $fileName = time()."$i.".$file->getClientOriginalExtension();
             $file->move(public_path('images/rooms'), $fileName);
@@ -55,6 +120,13 @@ class AdminRoomSettingsController extends Controller
             $files[] = [
                 $fileName,
             ];
+        }
+
+        // cover img 
+        if(!empty($request->file('cover'))){
+            $file = $request->file('cover');
+            $coverImg = time()."-cover.".$file->getClientOriginalExtension();
+            $file->move(public_path('images/rooms'), $coverImg);
         }
 
         $room = new Room;
@@ -65,14 +137,16 @@ class AdminRoomSettingsController extends Controller
         $room->max_adults = $request->max_adults;
         $room->facility = $request->facility;
         $room->price = $request->price;
+        $room->assign_room = array();
+        $room->cover = $coverImg;
         $room->img = $files;
         $room->room_size = $request->room_size;
         $room->bed_no = $request->bed_no;
         $room->bed_id = $request->bed_id;
         $room->save();
 
-        $floorIds = Floor::latest()->select('id')->get();
-        $room->floors->attach($floorIds);
+        $floorIds = Floor::latest()->pluck('id')->toArray();
+        $room->floors()->attach($floorIds);
 
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
     }
@@ -85,7 +159,6 @@ class AdminRoomSettingsController extends Controller
     }
     // roomCategoryAssign
     public function roomCategoryAssign(Request $request, Room $room) {
-
         $room->assign_room = $request->rooms;
         $room->save();
 

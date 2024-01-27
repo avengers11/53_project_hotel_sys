@@ -60,8 +60,9 @@
                                                         <td>{{$item->no_room}}</td>
                                                         <td>{{$item->st_room}}</td>
                                                         <td>
-                                                            <a href="{{route('admin.customer.delete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
-                                                            <a href="{{route('admin.customer.update.view', ['id' => $item])}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>
+                                                            <input type="hidden" id="id" value="{{$item->id}}">
+                                                            <a href="{{route('admin.room-settings.floorDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
+                                                            <a href="#" data-toggle="modal" data-target="#updateOld" class="btn btn-success updateOldData"><i class="feather icon-edit mr-0"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -139,5 +140,70 @@
         </div>
     </div>
 
+    {{-- model  --}}
+    <div class="modal fade" id="updateOld" tabindex="-1" role="dialog" aria-labelledby="updateOldLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="update_old_form" action="{{route('admin.room-settings.floorAdd')}}" method="post">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateOldLabel">Update old floor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-block">
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Floor Name</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="old_name" name="name"/>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Total Room</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="old_no_room" name="no_room"/>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Start Room No</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="old_st_room" name="st_room"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @push('script')
+        <script>
+            $(".updateOldData").click(function(){
+                let data = $(this).parent('td').parent('.odd');
+                let id = $(this).parent('td').parent('.odd').find('#id').val();
+
+                $("#old_name").val(data.children('td:nth-child(2)').html());
+                $("#old_no_room").val(data.children('td:nth-child(3)').html());
+                $("#old_st_room").val(data.children('td:nth-child(4)').html());
+
+                $("#update_old_form").attr('action', "{{url('admin/room-settings/floor-update')}}/"+id);
+            });
+        </script>
+    @endpush
 
 @endsection

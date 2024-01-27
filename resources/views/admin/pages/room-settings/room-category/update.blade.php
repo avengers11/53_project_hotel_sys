@@ -50,7 +50,7 @@
                                 <div class="col-md-12">
                                     <div id="wizard2">
                                         <section>
-                                            <form class="wizard-form" id="verticle-wizard" action="{{route('admin.room-settings.roomCategoryAdd')}}" method="POST" enctype="multipart/form-data">
+                                            <form class="wizard-form" id="verticle-wizard" action="{{route('admin.room-settings.roomCategoryUpdate', ['room' => $room->id])}}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <h3>Information </h3>
                                                 <fieldset>
@@ -59,7 +59,7 @@
                                                             <label for="title-2" class="block">Title *</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input id="title-2" name="title" type="text" class="form-control">
+                                                            <input id="title-2" name="title" value="{{$room['title']}}" type="text" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -67,7 +67,7 @@
                                                             <label for="subtitle-2" class="block">Subtitle *</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <textarea name="subtitle" id="subtitle" cols="30" rows="10" class="form-control"></textarea>
+                                                            <textarea name="subtitle" value="{{$room['subtitle']}}" id="subtitle" cols="30" rows="10" class="form-control"></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -75,7 +75,7 @@
                                                 <fieldset>
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">
-                                                            <textarea name="description" id="description" class="form-control"></textarea>
+                                                            <textarea name="description" value="{{$room['description']}}" id="description" class="form-control"></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -86,7 +86,7 @@
                                                             <label for="max_child-2" class="block">Max Children's *</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input id="max_child-2" name="number" type="max_child" class="form-control ">
+                                                            <input id="max_child-2" name="number" value="{{$room['number']}}" type="max_child" class="form-control ">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -94,14 +94,14 @@
                                                             <label for="max_adults-2" class="block">Max Adults *</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input id="max_adults-2" name="max_adults" type="number" class="form-control ">
+                                                            <input id="max_adults-2" name="max_adults" value="{{$room['max_adults']}}" type="number" class="form-control ">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">Select Facility</div>
                                                         <div class="col-sm-12">
-                                                            <select class="form-control required" name="facility" id="facility" onchange="faciltySelect($(this))">
+                                                            <select class="form-control required" name="facility" value="{{$room['facility']}}" id="facility" onchange="faciltySelect($(this))">
                                                                 <option value="">Select Facility</option>
                                                                 <option value="1">One</option>
                                                                 <option value="2">Two</option>
@@ -124,7 +124,7 @@
                                                             <label for="price-2" class="block">Price/Night *</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input id="price-2" name="price" type="text" class="form-control required">
+                                                            <input id="price-2" name="price" value="{{$room['price']}}" type="text" class="form-control required">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -132,7 +132,7 @@
                                                             <label for="room_size-2" class="block">Room Size</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <select class="form-control required" name="bed_id" >
+                                                            <select class="form-control required" name="bed_id" value="{{$room['bed_id']}}" >
                                                                 <option value="">Select Room Size</option>
                                                                 <option value="1">One</option>
                                                                 <option value="2">Two</option>
@@ -145,7 +145,7 @@
                                                             <label for="bed_no-2" class="block">Total Bed</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input id="bed_no-2" name="bed_no" type="text" class="form-control required">
+                                                            <input id="bed_no-2" name="bed_no" value="{{$room['bed_no']}}" type="text" class="form-control required">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -153,7 +153,7 @@
                                                             <label for="bed_no-2" class="block">Bed Name</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <select class="form-control required" name="bed_id" >
+                                                            <select class="form-control required" name="bed_id" value="{{$room['bed_id']}}" >
                                                                 <option value="">Select Bed</option>
                                                                 <option value="1">One</option>
                                                                 <option value="2">Two</option>
@@ -175,6 +175,9 @@
 
                                                     <div class="form-group row">
                                                         <div class="col-sm-12" id="img_container">
+                                                            @foreach ($room['img'][0] as $img)
+                                                                <img style="height: 3rem" src="{{asset('images/rooms/'.$img)}}" alt="">
+                                                            @endforeach
                                                         </div>
                                                     </div>
 
@@ -183,12 +186,13 @@
                                                             <label for="img-2" class="block">Cover Images</label>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                            <input onchange="previewImages2()" id="imageInput2" name="cover" multiple accept="image/*" type="file" class="form-control required">
+                                                            <input onchange="previewImages2()" id="imageInput2" name="cover" accept="image/*" type="file" class="form-control required">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row">
                                                         <div class="col-sm-12" id="img_container2">
+                                                            <img style="height: 3rem" src="{{asset('images/rooms/'.$room['cover'])}}" alt="">
                                                         </div>
                                                     </div>
 
