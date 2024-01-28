@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Floor;
-use App\Models\Room;
+use App\Models\RoomCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-Use FIle;
+use File;
 
 class AdminRoomSettingsController extends Controller
 {
@@ -26,17 +26,12 @@ class AdminRoomSettingsController extends Controller
         $floor->st_room = $request->st_room;
         $floor->save();
 
-        $roomIds = Room::latest()->pluck('id')->toArray();
-        $floor->rooms()->attach($roomIds);
-
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new floor!']);
     }
     // floorDelete
     public function floorDelete(Floor $floor) {
 
         $floor->delete();
-        $floor->rooms()->detach();
-
         return back()->with(['st' => true, 'msg' => 'You are successfully deleted a floor!']);
     }
     // floorUpdate
@@ -57,110 +52,122 @@ class AdminRoomSettingsController extends Controller
 
     //roomCategory
     public function roomCategory() {
-        $dataType = Room::orderBy('id', 'ASC')->paginate(10);
-        $room = Room::latest()->first();
+        $dataType = RoomCategory::orderBy('id', 'ASC')->paginate(10);
+        $roomCategory = RoomCategory::latest()->first();
 
-        return view("admin.pages.room-settings.room-category.list")->with(compact('dataType', 'room'));
+        return view("admin.pages.room-settings.room-category.list")->with(compact('dataType', 'roomCategory'));
     }
     // roomCategoryAddView
     public function roomCategoryAddView() {
         return view("admin.pages.room-settings.room-category.add");
     }
     // roomCategoryUpdateView
-    public function roomCategoryUpdateView(Room $room) {
-        return view("admin.pages.room-settings.room-category.update")->with(compact('room'));
+    public function roomCategoryUpdateView(RoomCategory $roomCategory) {
+        return view("admin.pages.room-settings.room-category.update")->with(compact('roomCategory'));
     }
     // roomCategoryUpdate
-    public function roomCategoryUpdate(Request $request, Room $room) {
+    public function roomCategoryUpdate(Request $request, RoomCategory $roomCategory) {
 
         $files = [];
 
-        // images 
+        // images
         if(!empty($request->img)){
-            foreach ($request->file('img') as $i=>$file) {
-                $fileName = time()."$i.".$file->getClientOriginalExtension();
-                $file->move(public_path('images/rooms'), $fileName);
-                $files[] = [
-                    $fileName,
-                ];
+            foreach ($request->file('img') as $i=>$fileImgs) {
+                $fileImgsName = time()."$i.".$fileImgs->getClientOriginalExtension();
+                $fileImgs->move(public_path('images/rooms'), $fileImgsName);
+                $files[] = $fileImgsName;
             }
 
-            foreach ($room->img['0'] as $value) {
-                Storage::delete(public_path('images/rooms/'.$value));
+            foreach (json_decode($roomCategory->img) as $value) {
+                FIle::delete(public_path('images/rooms/'.$value));
             }
         }else{
-            $files = $room->img;
+            $files = json_decode($roomCategory->img);
         }
 
-        // cover img 
+        // cover img
         if(!empty($request->file('cover'))){
-            $file = $request->file('cover');
-            $coverImg = time()."-cover.".$file->getClientOriginalExtension();
-            $file->move(public_path('images/rooms'), $coverImg);
-            Storage::delete(public_path('images/rooms/'.$room->cover));
+            $fileCover = $request->file('cover');
+            $coverImg = time()."-cover.".$fileCover->getClientOriginalExtension();
+            $fileCover->move(public_path('images/rooms'), $coverImg);
+
+            FIle::delete(public_path('images/rooms/'.$roomCategory->cover));
         }else{
-            $files = $room->img;
+            $coverImg = $roomCategory->cover;
         }
 
-        // $floorIds = Floor::latest()->pluck('id')->toArray();
-        // $room->floors()->attach($floorIds);
+        $roomCategory->title = $request->title;
+        $roomCategory->subtitle = $request->subtitle;
+        $roomCategory->description = $request->description;
+        $roomCategory->max_child = $request->max_child;
+        $roomCategory->max_adults = $request->max_adults;
+        $roomCategory->facility = !empty($request->facility) ? json_encode($request->facility) : array();
+        $roomCategory->price = $request->price;
+        $roomCategory->assign_room = array();
+        $roomCategory->cover = $coverImg;
+        $roomCategory->img = json_encode($files);
+        $roomCategory->room_size = $request->room_size;
+        $roomCategory->bed_no = $request->bed_no;
+        $roomCategory->bed_id = $request->bed_id;
+        $roomCategory->save();
 
-        // return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
+        return back()->with(['st' => true, 'msg' => 'You are successfully update room category!']);
+    }
+    // roomCategoryDelete
+    public function roomCategoryDelete(RoomCategory $roomCategory) {
+
+        $roomCategory->delete();
+
+        return back()->with(['st' => true, 'msg' => 'You are successfully deleted a room category!']);
     }
     // roomCategoryAdd
     public function roomCategoryAdd(Request $request)
     {
         $files = [];
-
-        // images 
+        // images
         foreach ($request->file('img') as $i=>$file) {
             $fileName = time()."$i.".$file->getClientOriginalExtension();
             $file->move(public_path('images/rooms'), $fileName);
 
-            $files[] = [
-                $fileName,
-            ];
+            $files[] = $fileName;
         }
 
-        // cover img 
+        // cover img
         if(!empty($request->file('cover'))){
             $file = $request->file('cover');
             $coverImg = time()."-cover.".$file->getClientOriginalExtension();
             $file->move(public_path('images/rooms'), $coverImg);
         }
 
-        $room = new Room;
-        $room->title = $request->title;
-        $room->subtitle = $request->subtitle;
-        $room->description = $request->description;
-        $room->max_child = $request->max_child;
-        $room->max_adults = $request->max_adults;
-        $room->facility = $request->facility;
-        $room->price = $request->price;
-        $room->assign_room = array();
-        $room->cover = $coverImg;
-        $room->img = $files;
-        $room->room_size = $request->room_size;
-        $room->bed_no = $request->bed_no;
-        $room->bed_id = $request->bed_id;
-        $room->save();
-
-        $floorIds = Floor::latest()->pluck('id')->toArray();
-        $room->floors()->attach($floorIds);
+        $roomCategory = new RoomCategory;
+        $roomCategory->title = $request->title;
+        $roomCategory->subtitle = $request->subtitle;
+        $roomCategory->description = $request->description;
+        $roomCategory->max_child = $request->max_child;
+        $roomCategory->max_adults = $request->max_adults;
+        $roomCategory->facility = $request->facility;
+        $roomCategory->price = $request->price;
+        $roomCategory->assign_room = array();
+        $roomCategory->cover = $coverImg;
+        $roomCategory->img = json_encode($files);
+        $roomCategory->room_size = $request->room_size;
+        $roomCategory->bed_no = $request->bed_no;
+        $roomCategory->bed_id = $request->bed_id;
+        $roomCategory->save();
 
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
     }
     // roomCategoryAssignView
     public function roomCategoryAssignView() {
         $dataType = Floor::orderBy('id', 'ASC')->get();
-        $roomCategory = Room::latest()->get();
+        $roomCategoryCategory = RoomCategory::latest()->get();
 
         return view("admin.pages.room-settings.room-category.assing")->with(compact('dataType', 'roomCategory'));
     }
     // roomCategoryAssign
-    public function roomCategoryAssign(Request $request, Room $room) {
-        $room->assign_room = $request->rooms;
-        $room->save();
+    public function roomCategoryAssign(Request $request, RoomCategory $roomCategory) {
+        $roomCategory->assign_room = $request->rooms;
+        $roomCategory->save();
 
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
     }

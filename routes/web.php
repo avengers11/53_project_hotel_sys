@@ -63,12 +63,12 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
             Route::get("/room-category", [AdminRoomSettingsController::class, 'roomCategory'])->name('roomCategory');
             Route::get("/room-category-add", [AdminRoomSettingsController::class, 'roomCategoryAddView'])->name('roomCategoryAdd.view');
-            Route::get("/room-category-update/{room}", [AdminRoomSettingsController::class, 'roomCategoryUpdateView'])->name('roomCategoryUpdate.view');
-            Route::post("/room-category-update/{room}", [AdminRoomSettingsController::class, 'roomCategoryUpdate'])->name('roomCategoryUpdate');
+            Route::get("/room-category-update/{roomCategory}", [AdminRoomSettingsController::class, 'roomCategoryUpdateView'])->name('roomCategoryUpdate.view');
+            Route::post("/room-category-update/{roomCategory}", [AdminRoomSettingsController::class, 'roomCategoryUpdate'])->name('roomCategoryUpdate');
             Route::post("/room-category-add", [AdminRoomSettingsController::class, 'roomCategoryAdd'])->name('roomCategoryAdd');
-            Route::get("/room-category-delete/{room}", [AdminRoomSettingsController::class, 'roomCategoryDelete'])->name('roomCategoryDelete');
-            Route::get("/room-category-assign/{room}", [AdminRoomSettingsController::class, 'roomCategoryAssignView'])->name('roomCategoryAssign.view');
-            Route::post("/room-category-assign/{room}", [AdminRoomSettingsController::class, 'roomCategoryAssign'])->name('roomCategoryAssign');
+            Route::get("/room-category-delete/{roomCategory}", [AdminRoomSettingsController::class, 'roomCategoryDelete'])->name('roomCategoryDelete');
+            Route::get("/room-category-assign/{room?}", [AdminRoomSettingsController::class, 'roomCategoryAssignView'])->name('roomCategoryAssign.view');
+            Route::post("/room-category-assign/{room?}", [AdminRoomSettingsController::class, 'roomCategoryAssign'])->name('roomCategoryAssign');
 
             Route::get("/coupon-code", [AdminRoomSettingsController::class, 'couponCode'])->name('couponCode');
         });

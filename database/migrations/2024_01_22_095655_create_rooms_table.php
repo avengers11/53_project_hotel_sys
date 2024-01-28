@@ -13,19 +13,8 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->text('subtitle')->nullable();
-            $table->longText('description')->nullable();
-            $table->string('max_child')->nullable();
-            $table->string('max_adults')->nullable();
-            $table->json('facility')->nullable();
-            $table->json('assign_room')->nullable();
-            $table->integer('price')->nullable();
-            $table->json('img')->nullable();
-            $table->string('cover')->nullable();
-            $table->string('room_size')->nullable();
-            $table->integer('bed_no')->nullable();
-            $table->integer('bed_id')->nullable();
+            $table->integer('floor_name');
+            $table->integer('room_no');
             $table->softDeletes();
             $table->timestamps();
         });

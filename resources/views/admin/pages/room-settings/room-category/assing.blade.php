@@ -56,7 +56,7 @@
                                                 $isDisabled = !in_array(request()->room, $roomIds) ? '' : 'disabled';
                                             @endphp
 
-                                            <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}" {{$isCheck}} {{$isDisabled}} >
+                                            <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}" {{$isCheck}} >
 
                                             {{$item->st_room+$i}} No Room={{$isDisabled}}
 

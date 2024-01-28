@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-block">
                         <a href="{{route('admin.room-settings.roomCategoryAdd.view')}}" class="btn btn-success m-b-20 text-light">Add New</a>
-                        <a href="{{route('admin.room-settings.roomCategoryAssign.view', ['room' => $room])}}" class="btn btn-info m-b-20">Assign Room</a>
+                        <a href="{{route('admin.room-settings.roomCategoryAssign.view', $roomCategory)}}" class="btn btn-info m-b-20">Assign Room</a>
                         <div class="dt-responsive table-responsive">
                             <div id="add-row-table_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                 <div class="row">
@@ -71,7 +71,7 @@
                                                         <td>{{$item->bed_id}}</td>
                                                         <td>
                                                             <a href="{{route('admin.room-settings.roomCategoryDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
-                                                            <a href="{{route('admin.room-settings.roomCategoryUpdate.view', ['room' => $item])}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>
+                                                            <a href="{{route('admin.room-settings.roomCategoryUpdate.view', $item)}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

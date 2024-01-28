@@ -15,10 +15,16 @@ class RoomSeeder extends Seeder
     {
         Room::insert([
             [
-                'title' => 'VIP-1'
+                'title' => 'VIP-1',
+                'facility' => array(),
+                'assign_room' => array(),
+                'img' => array(),
             ],
             [
-                'title' => 'VIP-2'
+                'title' => 'VIP-2',
+                'facility' => array(),
+                'assign_room' => array(),
+                'img' => array(),
             ]
         ]);
     }
