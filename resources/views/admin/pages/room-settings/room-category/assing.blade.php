@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <form action="{{route('admin.room-settings.roomCategoryAssign', request()->room)}}" method="post">
+            <form action="{{route('admin.room-settings.roomCategoryAssign', request()->roomCategory)}}" method="post">
                 @csrf
 
                 <div class="card">
@@ -25,12 +25,16 @@
                                 <h4 class="sub-title">Select Room Category</h4>
                                 <select class="js-example-basic-single col-sm-12" onchange="roomSelect($(this))">
                                         <option value="">Select Room</option>
-                                        @foreach ($roomCategory as $item)
+                                        @foreach ($roomCategories as $item)
                                             <option value="{{$item->id}}">{{$item->title}}</option>
                                         @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        @php
+                            $currentRoomNo = $roomCategory->rooms->pluck('room_no')->toArray();
+                        @endphp
 
                         @foreach ($dataType as $index=>$item)
                             @php
@@ -45,23 +49,29 @@
                             @endphp
                             <div class="col-12">
                                 <div class="row mb-5">
+                                    
                                     <button style="width: 100%" class="btn btn-success col-12">{{$item->name}}</button>
-                                    @for ($i = 0; $i < $item->no_room; $i++)
-                                        <label class="btn btn-out-dotted {{$btn}} btn-square col-xl-2 col-md-3 col-6" for="room{{$i.$index}}">
-                                            @php
-                                                $roomData = $item->rooms->pluck('assign_room')->toArray();
-                                                $roomIds = $item->rooms->pluck('id')->toArray();
-                                                $flattenedArray = call_user_func_array('array_merge', $roomData);
-                                                $isCheck = in_array($item->st_room+$i, $flattenedArray) ? 'checked' : '';
-                                                $isDisabled = !in_array(request()->room, $roomIds) ? '' : 'disabled';
-                                            @endphp
+                                    @foreach ($item->rooms as $room)
+                                        @php
+                                            $disabled = "disabled";
+                                            if(!in_array($room->room_no, $currentRoomNo) && $room->assign == true){
+                                                $disabled = "disabled";
+                                            }else{
+                                                $disabled = "";
+                                            }
 
-                                            <input type="checkbox" name="rooms[]" id="room{{$i.$index}}" class="form-check-input" value="{{$item->st_room+$i}}" {{$isCheck}} >
-
-                                            {{$item->st_room+$i}} No Room={{$isDisabled}}
-
+                                            $isCheck = "checked";
+                                            if($room->assign == true){
+                                                $isCheck = "checked";
+                                            }else{
+                                                $isCheck = "";
+                                            }
+                                        @endphp
+                                        <label class="btn btn-out-dotted {{$btn}} btn-square col-xl-2 col-md-3 col-6" for="room_{{$room->room_no}}">
+                                            <input type="checkbox" name="rooms[]" id="room_{{$room->room_no}}" class="form-check-input" {{$isCheck}} value="{{$room->room_no}}" {{$disabled}} >
+                                            {{$room->room_no}} No Room
                                         </label>
-                                    @endfor
+                                    @endforeach
                                 </div>
                             </div>
                         @endforeach

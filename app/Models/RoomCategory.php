@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RoomCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $casts = [
         "facility" => 'json',
@@ -17,5 +18,9 @@ class RoomCategory extends Model
 
     public function floors(){
         return $this->belongsToMany(Floor::class);
+    }
+
+    public function rooms(){
+        return $this->hasMany(Room::class);
     }
 }

@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Floor;
 use Illuminate\Http\Request;
 
 class AdminRoomAbilityController extends Controller
 {
     //facility
     public function facility() {
-        return view("admin.pages.room-ability.facility.list");
+        $dataType = Floor::orderBy('id', 'ASC')->paginate();
+        return view("admin.pages.room-ability.facility.list")->with(compact('dataType'));
     }
 
     //bedList

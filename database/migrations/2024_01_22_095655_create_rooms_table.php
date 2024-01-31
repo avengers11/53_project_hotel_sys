@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->integer('floor_name');
+            $table->integer('room_category_id');
+            $table->integer('floor_id');
+            $table->string('floor_name');
             $table->integer('room_no');
+            $table->boolean('assign');
             $table->softDeletes();
             $table->timestamps();
         });

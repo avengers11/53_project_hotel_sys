@@ -67,8 +67,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::post("/room-category-update/{roomCategory}", [AdminRoomSettingsController::class, 'roomCategoryUpdate'])->name('roomCategoryUpdate');
             Route::post("/room-category-add", [AdminRoomSettingsController::class, 'roomCategoryAdd'])->name('roomCategoryAdd');
             Route::get("/room-category-delete/{roomCategory}", [AdminRoomSettingsController::class, 'roomCategoryDelete'])->name('roomCategoryDelete');
-            Route::get("/room-category-assign/{room?}", [AdminRoomSettingsController::class, 'roomCategoryAssignView'])->name('roomCategoryAssign.view');
-            Route::post("/room-category-assign/{room?}", [AdminRoomSettingsController::class, 'roomCategoryAssign'])->name('roomCategoryAssign');
+            Route::get("/room-category-assign/{roomCategory?}", [AdminRoomSettingsController::class, 'roomCategoryAssignView'])->name('roomCategoryAssign.view');
+            Route::post("/room-category-assign/{roomCategory?}", [AdminRoomSettingsController::class, 'roomCategoryAssign'])->name('roomCategoryAssign');
 
             Route::get("/coupon-code", [AdminRoomSettingsController::class, 'couponCode'])->name('couponCode');
         });

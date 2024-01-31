@@ -112,7 +112,6 @@
 
                                                     <div class="form-group row">
                                                         <div class="col-sm-12" id="facility_container">
-                                                            {{-- <button class="btn btn-primary btn-outline-primary">Primary Button</button> --}}
                                                         </div>
                                                     </div>
 
@@ -231,7 +230,8 @@
         <script src="{{url('/')}}/assets\admin\bower_components\tinymce_6.8.2\js\tinymce\tinymce.min.js"></script>
         <script>
             function faciltySelect(e){
-                $("#facility_container").append(`<input type="hidden" value='${e.val()}' name='facility[]' /><button class="btn btn-primary btn-outline-primary">${e.val()}</button>`);
+                console.log(e);
+                $("#facility_container").append(`<input type="hidden" value='${e.val()}' name='facility[]' /><button class="btn btn-primary btn-outline-primary">${e.html()}</button>`);
             }
 
             // previewImages

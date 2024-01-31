@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Floor;
+use App\Models\Room;
 use App\Models\RoomCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,12 +27,25 @@ class AdminRoomSettingsController extends Controller
         $floor->st_room = $request->st_room;
         $floor->save();
 
+        for ($i=0; $i < $request->no_room; $i++) {
+            $room_no = $request->st_room + $i;
+
+            $room = new Room;
+            $room->floor_name = "$room_no No Room";
+            $room->room_no = $room_no;
+            $room->floor_id = $floor->id;
+            $room->assign = false;
+            $room->save();
+        }
+
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new floor!']);
     }
     // floorDelete
     public function floorDelete(Floor $floor) {
 
+        Room::where('floor_id', $floor->id)->delete();
         $floor->delete();
+
         return back()->with(['st' => true, 'msg' => 'You are successfully deleted a floor!']);
     }
     // floorUpdate
@@ -116,6 +130,15 @@ class AdminRoomSettingsController extends Controller
     // roomCategoryDelete
     public function roomCategoryDelete(RoomCategory $roomCategory) {
 
+        $thisRoom = Room::where('room_category_id', $roomCategory->id) -> get();
+
+        foreach ($thisRoom as $key => $value) {
+            Room::where('id', $value->id)->update([
+                'room_category_id' => null,
+                'assign' => false,
+            ]);
+        }
+
         $roomCategory->delete();
 
         return back()->with(['st' => true, 'msg' => 'You are successfully deleted a room category!']);
@@ -158,16 +181,32 @@ class AdminRoomSettingsController extends Controller
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
     }
     // roomCategoryAssignView
-    public function roomCategoryAssignView() {
+    public function roomCategoryAssignView(RoomCategory $roomCategory) {
         $dataType = Floor::orderBy('id', 'ASC')->get();
-        $roomCategoryCategory = RoomCategory::latest()->get();
+        $roomCategories = RoomCategory::latest()->get();
 
-        return view("admin.pages.room-settings.room-category.assing")->with(compact('dataType', 'roomCategory'));
+        return view("admin.pages.room-settings.room-category.assing")->with(compact('dataType', 'roomCategories', 'roomCategory'));
     }
     // roomCategoryAssign
     public function roomCategoryAssign(Request $request, RoomCategory $roomCategory) {
-        $roomCategory->assign_room = $request->rooms;
-        $roomCategory->save();
+
+        $thisRoom = Room::where('room_category_id', $roomCategory->id) -> get();
+
+        foreach ($thisRoom as $key => $value) {
+            Room::where('id', $value->id)->update([
+                'room_category_id' => null,
+                'assign' => false,
+            ]);
+        }
+
+        if(!empty($request->rooms)){
+            foreach ($request->rooms as $key => $value) {
+                Room::where('room_no', $value)->update([
+                    'room_category_id' => $roomCategory->id,
+                    'assign' => true,
+                ]);
+            }
+        }
 
         return back()->with(['st' => true, 'msg' => 'You are successfully added a new room category!']);
     }

@@ -17,6 +17,10 @@ class Room extends Model
     ];
 
     public function floors(){
-        return $this->belongsToMany(Floor::class);
+        return $this->belongsTo(Floor::class);
+    }
+
+    public function roomCategories(){
+        return $this->belongsTo(RoomCategory::class);
     }
 }

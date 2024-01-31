@@ -11,6 +11,6 @@ class Floor extends Model
     use HasFactory, SoftDeletes;
 
     public function rooms(){
-        return $this->belongsToMany(Room::class);
+        return $this->hasMany(Room::class);
     }
 }

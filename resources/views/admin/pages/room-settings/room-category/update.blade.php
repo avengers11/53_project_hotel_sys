@@ -50,7 +50,7 @@
                                 <div class="col-md-12">
                                     <div id="wizard2">
                                         <section>
-                                            <form class="wizard-form" id="verticle-wizard" action="{{route('admin.room-settings.roomCategoryUpdate', ['room' => $roomCategory->id])}}" method="POST" enctype="multipart/form-data">
+                                            <form class="wizard-form" id="verticle-wizard" action="{{route('admin.room-settings.roomCategoryUpdate', ['roomCategory' => $roomCategory->id])}}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <h3>Information </h3>
                                                 <fieldset>
