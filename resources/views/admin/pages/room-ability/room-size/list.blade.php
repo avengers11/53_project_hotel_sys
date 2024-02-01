@@ -45,7 +45,7 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">#</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Bed Name</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Room Size</th>
                                                     <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Action</th>
                                                 </tr>
                                             </thead>
@@ -56,7 +56,7 @@
                                                         <td>{{$item->name}}</td>
                                                         <td>
                                                             <input type="hidden" id="id" value="{{$item->id}}">
-                                                            <a href="{{route('admin.room-ability.bedListDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
+                                                            <a href="{{route('admin.room-ability.roomSizeDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
                                                             <a href="#" data-toggle="modal" data-target="#updateOld" class="btn btn-success updateOldData"><i class="feather icon-edit mr-0"></i></a>
                                                         </td>
                                                     </tr>
@@ -87,11 +87,11 @@
     {{-- model  --}}
     <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="{{route('admin.room-ability.bedListAdd')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('admin.room-ability.roomSizeAdd')}}" method="post">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addNewLabel">Add new bed</h5>
+                        <h5 class="modal-title" id="addNewLabel">Add new Room Size</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -100,7 +100,7 @@
                         <div class="card-block">
                             <div class="row form-group">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Name</label>
+                                    <label class="col-form-label">Room Size</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="name" required/>
@@ -120,11 +120,11 @@
     {{-- model  --}}
     <div class="modal fade" id="updateOld" tabindex="-1" role="dialog" aria-labelledby="updateOldLabel" aria-hidden="true" >
         <div class="modal-dialog" role="document">
-            <form id="update_old_form" action="" method="post" enctype="multipart/form-data">
+            <form id="update_old_form" action="" method="post">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="updateOldLabel">Update old bed</h5>
+                        <h5 class="modal-title" id="updateOldLabel">Update old room size</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -158,7 +158,7 @@
 
                 $("#old_name").val(data.children('td:nth-child(2)').html());
 
-                $("#update_old_form").attr('action', "{{url('admin/room-ability/bed-list-update')}}/"+id);
+                $("#update_old_form").attr('action', "{{url('admin/room-ability/room-size-update')}}/"+id);
             });
         </script>
     @endpush

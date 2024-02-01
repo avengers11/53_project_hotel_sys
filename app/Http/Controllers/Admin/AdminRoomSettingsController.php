@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bed;
+use App\Models\Facility;
 use App\Models\Floor;
 use App\Models\Room;
 use App\Models\RoomCategory;
+use App\Models\RoomSize;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -61,6 +64,7 @@ class AdminRoomSettingsController extends Controller
     // floors
     public function floors() {
         $dataType = Floor::orderBy('id', 'ASC')->get();
+
         return view("admin.pages.room-settings.floor-list.floors")->with(compact('dataType'));
     }
 
@@ -73,7 +77,10 @@ class AdminRoomSettingsController extends Controller
     }
     // roomCategoryAddView
     public function roomCategoryAddView() {
-        return view("admin.pages.room-settings.room-category.add");
+        $facility = Facility::latest()->get();
+        $bedName = Bed::latest()->get();
+        $roomSize = RoomSize::latest()->get();
+        return view("admin.pages.room-settings.room-category.add")->with(compact('facility', 'bedName', 'roomSize'));
     }
     // roomCategoryUpdateView
     public function roomCategoryUpdateView(RoomCategory $roomCategory) {

@@ -31,12 +31,6 @@
                                     @for ($i = 0; $i < $item->no_room; $i++)
                                         <button class="btn btn-out-dotted {{$btn}} btn-square col-xl-2 col-md-3 col-4">{{$item->st_room+$i}} No Room</button>
                                     @endfor
-                                    {{-- <button class="btn btn-out-dotted btn-success btn-square">Success Button</button>
-                                    <button class="btn btn-out-dotted btn-info btn-square">Info Button</button>
-                                    <button class="btn btn-out-dotted btn-warning btn-square">Warning Button</button>
-                                    <button class="btn btn-out-dotted btn-danger btn-square">Danger Button</button>
-                                    <button class="btn btn-out-dotted btn-inverse btn-square">Inverse Button</button>
-                                    <button class="btn btn-out-dotted btn-disabled btn-square disabled">Disabled Button</button> --}}
                                 </div>
                             </div>
                         @endforeach

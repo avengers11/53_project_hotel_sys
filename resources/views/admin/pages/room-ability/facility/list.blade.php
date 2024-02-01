@@ -16,7 +16,6 @@
                 <div class="card">
                     <div class="card-block">
                         <a data-toggle="modal" data-target="#addNew" class="btn btn-success m-b-20 text-light">Add New</a>
-                        <a href="{{route('admin.room-settings.floors')}}" class="btn btn-info m-b-20">View Floor</a>
                         <div class="dt-responsive table-responsive">
                             <div id="add-row-table_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                 <div class="row">
@@ -45,11 +44,11 @@
                                         <table id="add-row-table" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="add-row-table_info">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" aria-label="#:-" style="width: 267.641px;">#</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" aria-label="Floor Name:-" style="width: 267.641px;">Floor Name</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" aria-label="Total Room:-" style="width: 267.641px;">Total Room</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" aria-label="Start Room No:-" style="width: 267.641px;">Start Room No</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" aria-label="Column 5:-" style="width: 267.641px;">Action</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">#</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Facility Name</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Facility Description</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Image</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="add-row-table" rowspan="1" colspan="1" style="width: 267.641px;">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -57,11 +56,11 @@
                                                     <tr role="row" class="odd">
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>{{$item->name}}</td>
-                                                        <td>{{$item->no_room}}</td>
-                                                        <td>{{$item->st_room}}</td>
+                                                        <td>{{$item->description}}</td>
+                                                        <td><img style="width: 5rem" src="{{asset('images/facility/'.$item->img)}}" alt=""></td>
                                                         <td>
                                                             <input type="hidden" id="id" value="{{$item->id}}">
-                                                            <a href="{{route('admin.room-settings.floorDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
+                                                            <a href="{{route('admin.room-ability.facilityDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
                                                             <a href="#" data-toggle="modal" data-target="#updateOld" class="btn btn-success updateOldData"><i class="feather icon-edit mr-0"></i></a>
                                                         </td>
                                                     </tr>
@@ -92,11 +91,11 @@
     {{-- model  --}}
     <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="{{route('admin.room-settings.floorAdd')}}" method="post">
+            <form action="{{route('admin.room-ability.facilityAdd')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addNewLabel">Add new floor</h5>
+                        <h5 class="modal-title" id="addNewLabel">Add new facility</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -108,7 +107,7 @@
                                     <label class="col-form-label">Name</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="name"/>
+                                    <input type="text" class="form-control" name="name" required/>
                                 </div>
                             </div>
 
@@ -117,7 +116,7 @@
                                     <label class="col-form-label">Description</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <textarea name="" class="form-control" cols="30" rows="10"></textarea>
+                                    <textarea name="description" class="form-control" cols="30" rows="10" required></textarea>
                                 </div>
                             </div>
 
@@ -126,7 +125,7 @@
                                     <label class="col-form-label">Image</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" name="st_room"/>
+                                    <input type="file" class="form-control" name="img" required/>
                                 </div>
                             </div>
                         </div>
@@ -141,13 +140,13 @@
     </div>
 
     {{-- model  --}}
-    <div class="modal fade" id="updateOld" tabindex="-1" role="dialog" aria-labelledby="updateOldLabel" aria-hidden="true">
+    <div class="modal fade" id="updateOld" tabindex="-1" role="dialog" aria-labelledby="updateOldLabel" aria-hidden="true" >
         <div class="modal-dialog" role="document">
-            <form id="update_old_form" action="{{route('admin.room-settings.floorAdd')}}" method="post">
+            <form id="update_old_form" action="" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="updateOldLabel">Update old floor</h5>
+                        <h5 class="modal-title" id="updateOldLabel">Update old facility</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -156,7 +155,7 @@
                         <div class="card-block">
                             <div class="row form-group">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Floor Name</label>
+                                    <label class="col-form-label">Facility Name</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="old_name" name="name"/>
@@ -165,19 +164,24 @@
 
                             <div class="row form-group">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Total Room</label>
+                                    <label class="col-form-label">Facility Description</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="old_no_room" name="no_room"/>
+                                    <input type="text" class="form-control" id="old_description" name="description"/>
                                 </div>
                             </div>
 
                             <div class="row form-group">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Start Room No</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="old_st_room" name="st_room"/>
+                                    <img id="old_img" class="mb-2" width="50" src="" alt="">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Image</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" name="img"/>
                                 </div>
                             </div>
                         </div>
@@ -196,12 +200,13 @@
             $(".updateOldData").click(function(){
                 let data = $(this).parent('td').parent('.odd');
                 let id = $(this).parent('td').parent('.odd').find('#id').val();
+                console.log();
 
                 $("#old_name").val(data.children('td:nth-child(2)').html());
-                $("#old_no_room").val(data.children('td:nth-child(3)').html());
-                $("#old_st_room").val(data.children('td:nth-child(4)').html());
+                $("#old_description").val(data.children('td:nth-child(3)').html());
+                $("#old_img").attr('src', data.children('td:nth-child(4)').children('img').attr('src'));
 
-                $("#update_old_form").attr('action', "{{url('admin/room-settings/floor-update')}}/"+id);
+                $("#update_old_form").attr('action', "{{url('admin/room-ability/facility-update')}}/"+id);
             });
         </script>
     @endpush

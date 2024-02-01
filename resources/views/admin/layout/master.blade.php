@@ -353,8 +353,8 @@
                                                 <span class="pcoded-mtext">Bed List</span>
                                             </a>
                                         </li>
-                                        <li class="@if(Route::is('admin.room-ability.bedSize')) active @endif">
-                                            <a href="{{route('admin.room-ability.bedSize')}}">
+                                        <li class="@if(Route::is('admin.room-ability.roomSize')) active @endif">
+                                            <a href="{{route('admin.room-ability.roomSize')}}">
                                                 <span class="pcoded-mtext">Room Size</span>
                                             </a>
                                         </li>

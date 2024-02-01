@@ -49,8 +49,19 @@ Route::prefix('admin')->name('admin.')->group(function(){
         // room ability
         Route::prefix('room-ability')->name('room-ability.')->group(function(){
             Route::get("/facility", [AdminRoomAbilityController::class, 'facility'])->name('facility');
+            Route::post("/facility-add", [AdminRoomAbilityController::class, 'facilityAdd'])->name('facilityAdd');
+            Route::post("/facility-update/{facility}", [AdminRoomAbilityController::class, 'facilityUpdate'])->name('facilityUpdate');
+            Route::get("/facility-delete/{facility}", [AdminRoomAbilityController::class, 'facilityDelete'])->name('facilityDelete');
+
             Route::get("/bed-list", [AdminRoomAbilityController::class, 'bedList'])->name('bedList');
-            Route::get("/bed-size", [AdminRoomAbilityController::class, 'bedSize'])->name('bedSize');
+            Route::post("/bed-list-add", [AdminRoomAbilityController::class, 'bedListAdd'])->name('bedListAdd');
+            Route::post("/bed-list-update/{bed}", [AdminRoomAbilityController::class, 'bedListUpdate'])->name('bedListUpdate');
+            Route::get("/bed-list-delete/{bed}", [AdminRoomAbilityController::class, 'bedListDelete'])->name('bedListDelete');
+
+            Route::get("/room-size", [AdminRoomAbilityController::class, 'roomSize'])->name('roomSize');
+            Route::post("/room-size-add", [AdminRoomAbilityController::class, 'roomSizeAdd'])->name('roomSizeAdd');
+            Route::post("/room-size-update/{roomSize}", [AdminRoomAbilityController::class, 'roomSizeUpdate'])->name('roomSizeUpdate');
+            Route::get("/room-size-delete/{roomSize}", [AdminRoomAbilityController::class, 'roomSizeDelete'])->name('roomSizeDelete');
         });
 
         // room settings

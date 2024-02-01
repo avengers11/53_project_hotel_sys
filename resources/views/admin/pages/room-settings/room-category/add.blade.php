@@ -103,9 +103,11 @@
                                                         <div class="col-sm-12">
                                                             <select class="form-control required" name="facility" id="facility" onchange="faciltySelect($(this))">
                                                                 <option value="">Select Facility</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+
+                                                                @foreach ($facility as $item)
+                                                                    <option value="{{$item->name}}">{{$item->name}}</option>
+                                                                @endforeach
+
                                                             </select>
                                                         </div>
                                                     </div>
@@ -133,9 +135,11 @@
                                                         <div class="col-sm-12">
                                                             <select class="form-control required" name="bed_id" >
                                                                 <option value="">Select Room Size</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+
+                                                                @foreach ($roomSize as $item)
+                                                                    <option value="{{$item->name}}">{{$item->name}}</option>
+                                                                @endforeach
+
                                                             </select>
                                                         </div>
                                                     </div>
@@ -154,9 +158,11 @@
                                                         <div class="col-sm-12">
                                                             <select class="form-control required" name="bed_id" >
                                                                 <option value="">Select Bed</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+
+                                                                @foreach ($bedName as $item)
+                                                                    <option value="{{$item->name}}">{{$item->name}}</option>
+                                                                @endforeach
+
                                                             </select>
                                                         </div>
                                                     </div>
@@ -231,7 +237,7 @@
         <script>
             function faciltySelect(e){
                 console.log(e);
-                $("#facility_container").append(`<input type="hidden" value='${e.val()}' name='facility[]' /><button class="btn btn-primary btn-outline-primary">${e.html()}</button>`);
+                $("#facility_container").append(`<input type="hidden" value='${e.val()}' name='facility[]' /><button class="btn btn-primary btn-outline-primary">${e.val()}</button>`);
             }
 
             // previewImages
