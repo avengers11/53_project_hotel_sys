@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAccountController;
+use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminRoomAbilityController;
@@ -82,6 +83,16 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::post("/room-category-assign/{roomCategory?}", [AdminRoomSettingsController::class, 'roomCategoryAssign'])->name('roomCategoryAssign');
 
             Route::get("/coupon-code", [AdminRoomSettingsController::class, 'couponCode'])->name('couponCode');
+        });
+
+        // booking
+        Route::prefix('booking')->name('booking.')->group(function(){
+            Route::get("/new", [AdminBookingController::class, 'bookingNew'])->name('bookingNew');
+            Route::get("/add-new", [AdminBookingController::class, 'bookingAddNew'])->name('bookingAddNew');
+
+            Route::get("/checkin", [AdminBookingController::class, 'bookingCheckin'])->name('bookingCheckin');
+            Route::get("/checkout", [AdminBookingController::class, 'bookingCheckout'])->name('bookingCheckout');
+            Route::get("/room", [AdminBookingController::class, 'bookingRoom'])->name('bookingRoom');
         });
 
 

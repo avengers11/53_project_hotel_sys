@@ -385,6 +385,35 @@
                                     </ul>
                                 </li>
 
+                                <li class="pcoded-hasmenu @if(Route::is('admin.booking*')) pcoded-trigger active @endif" dropdown-icon="style1" subitem-icon="style1">
+                                    <a href="javascript:void(0)">
+                                        <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                                        <span class="pcoded-mtext">Booking Management</span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        <li class="@if(Route::is('admin.booking.bookingNew')) active @endif">
+                                            <a href="{{route('admin.booking.bookingNew')}}">
+                                                <span class="pcoded-mtext">New Booking</span>
+                                            </a>
+                                        </li>
+                                        <li class="@if(Route::is('admin.booking.bookingCheckin')) active @endif">
+                                            <a href="{{route('admin.booking.bookingCheckin')}}">
+                                                <span class="pcoded-mtext">Checkin</span>
+                                            </a>
+                                        </li>
+                                        <li class="@if(Route::is('admin.booking.bookingCheckout')) active @endif">
+                                            <a href="{{route('admin.booking.bookingCheckout')}}">
+                                                <span class="pcoded-mtext">Checkout</span>
+                                            </a>
+                                        </li>
+                                        <li class="@if(Route::is('admin.booking.bookingRoom')) active @endif">
+                                            <a href="{{route('admin.booking.bookingRoom')}}">
+                                                <span class="pcoded-mtext">Available Room</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                             </ul>
                         </div>
                     </nav>
