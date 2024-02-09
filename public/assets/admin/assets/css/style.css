@@ -869,9 +869,6 @@
     .j-pro .j-checkbox-toggle {
         padding-bottom: 30px
     }
-    .main-body .page-wrapper {
-        padding: 10px
-    }
     .blog-page hr {
         margin-top: 20px;
         margin-bottom: 20px
@@ -9619,7 +9616,6 @@ p {
 }
 
 .main-body .page-wrapper {
-    padding: 1.8rem;
     -webkit-transition: all ease-in 0.3s;
     transition: all ease-in 0.3s
 }
@@ -9769,7 +9765,7 @@ p {
     -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
     box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
     border: none;
-    margin-bottom: 30px
+    margin-bottom: 20px
 }
 
 .card .card-footer {
@@ -11279,7 +11275,8 @@ a.bg-danger:hover {
 
 .table-borderless tbody tr td,
 .table-borderless tbody tr th {
-    border: 0
+    border: 0;
+    font-size: 12px;
 }
 
 .table-bordered>thead>tr.border-solid>td,
@@ -24691,7 +24688,8 @@ span.value {
 }
 
 .table-card .card-block .table>thead>tr>th {
-    border-top: 0
+    border-top: 0;
+    font-size: 14px;
 }
 
 .table-card .card-block .table .chk-option {

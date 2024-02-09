@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Bed;
 use App\Models\Facility;
 use App\Models\Floor;
 use App\Models\Room;
 use App\Models\RoomCategory;
 use App\Models\RoomSize;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use File;
 
-class AdminRoomSettingsController extends Controller
+class AdminRoomSettingController extends Controller
 {
     //floorList
     public function floorList() {
@@ -222,5 +220,4 @@ class AdminRoomSettingsController extends Controller
     public function couponCode() {
         return view("admin.pages.room-settings.coupon-code.list");
     }
-
 }

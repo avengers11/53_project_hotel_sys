@@ -387,7 +387,7 @@
 
                                 <li class="pcoded-hasmenu @if(Route::is('admin.booking*')) pcoded-trigger active @endif" dropdown-icon="style1" subitem-icon="style1">
                                     <a href="javascript:void(0)">
-                                        <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                                        <span class="pcoded-micon"><i class="ti-archive"></i></span>
                                         <span class="pcoded-mtext">Booking Management</span>
                                     </a>
                                     <ul class="pcoded-submenu">
@@ -412,6 +412,20 @@
                                             </a>
                                         </li>
                                     </ul>
+                                </li>
+
+                                <li class="@if(Route::is('admin.service.serviceShow')) active @endif">
+                                    <a href="{{route('admin.service.serviceShow')}}">
+                                        <span class="pcoded-micon"><i class="ti-shopping-cart-full"></i></span>
+                                        <span class="pcoded-mtext">Services</span>
+                                    </a>
+                                </li>
+
+                                <li class="@if(Route::is('admin.activity.activityShow')) active @endif">
+                                    <a href="{{route('admin.activity.activityShow')}}">
+                                        <span class="pcoded-micon"><i class="ti-map-alt"></i></span>
+                                        <span class="pcoded-mtext">Activity</span>
+                                    </a>
                                 </li>
 
                             </ul>
