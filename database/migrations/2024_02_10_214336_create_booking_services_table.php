@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('booking_services', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->nullable();
+            $table->integer('service_id')->nullable();
             $table->integer('booking_id')->nullable();
-            $table->string('description')->nullable();
-            $table->string('date')->nullable();
-            $table->integer('payment_method_id')->nullable();
-            $table->integer('trx_id')->nullable();
+            $table->integer('qty')->nullable();
+            $table->integer('tax')->nullable();
             $table->integer('amount')->nullable();
-            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('booking_services');
     }
 };

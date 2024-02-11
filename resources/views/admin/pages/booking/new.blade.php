@@ -57,15 +57,15 @@
                                     @foreach ($dataType as $item)
                                         <tr role="row" class="odd">
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$item->title}}</td>
-                                            <td>{{$item->max_child}}</td>
+                                            <td>{{$item->user->fname." ".$item->user->lname}}</td>
+                                            <td>{{$item->checkin}}</td>
+                                            <td>{{$item->checkout}}</td>
+                                            <td>{{$item->total_night}}</td>
                                             <td>{{$item->max_adults}}</td>
-                                            <td>{{$item->room_size}}</td>
-                                            <td>{{$item->bed_no}}</td>
-                                            <td>{{$item->bed_no}}</td>
-                                            <td>{{$item->bed_no}}</td>
-                                            <td>{{$item->bed_no}}</td>
-                                            <td>{{$item->bed_id}}</td>
+                                            <td>{{$item->max_children}}</td>
+                                            <td>{{$item->status}}</td>
+                                            <td>{{date_format($item->created_at, 'd M, y h:i:s a')}}</td>
+                                            <td>{{date_format($item->updated_at, 'd M, y h:i:s a')}}</td>
                                             <td>
                                                 <a href="{{route('admin.room-settings.roomCategoryDelete', $item)}}" class="btn btn-danger"><i class="feather icon-delete mr-0"></i></a>
                                                 <a href="{{route('admin.room-settings.roomCategoryUpdate.view', $item)}}" class="btn btn-success"><i class="feather icon-edit mr-0"></i></a>

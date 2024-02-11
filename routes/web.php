@@ -91,6 +91,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get("/new", [AdminBookingController::class, 'bookingNew'])->name('bookingNew');
         Route::get("/add-new", [AdminBookingController::class, 'bookingAddNew'])->name('bookingAddNew');
 
+        Route::post("/add-newView", [AdminBookingController::class, 'bookingAddNewView'])->name('bookingAddNew.view');
+
         Route::get("/checkin", [AdminBookingController::class, 'bookingCheckin'])->name('bookingCheckin');
         Route::get("/checkout", [AdminBookingController::class, 'bookingCheckout'])->name('bookingCheckout');
         Route::get("/room", [AdminBookingController::class, 'bookingRoom'])->name('bookingRoom');
