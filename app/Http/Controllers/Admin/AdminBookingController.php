@@ -35,7 +35,7 @@ class AdminBookingController extends Controller
         $booking->max_children = $req->max_children;
         $booking->save();
 
-        // room 
+        // room
         for ($i=0; $i < count($req->room_ids); $i++) {
             BookingRoom::insert([
                 "booking_id" => $booking->id,
@@ -46,7 +46,7 @@ class AdminBookingController extends Controller
             ]);
         }
 
-        // Service 
+        // Service
         for ($i=0; $i < count($req->service_ids); $i++) {
             BookingService::insert([
                 "service_id" => $req['service_ids'][$i],
@@ -57,7 +57,7 @@ class AdminBookingController extends Controller
             ]);
         }
 
-        // activity 
+        // activity
         for ($i=0; $i < count($req->activity_ids); $i++) {
             BookingActivity::insert([
                 "activity_id" => $req['activity_ids'][$i],
@@ -68,7 +68,7 @@ class AdminBookingController extends Controller
             ]);
         }
 
-        // payments 
+        // payments
         for ($i=0; $i < count($req->payment_descriptions); $i++) {
             Payment::insert([
                 "user_id" => $req->user_id,
@@ -78,7 +78,7 @@ class AdminBookingController extends Controller
                 "payment_method_id" => $req['payment_methods'][$i],
                 "trx_id" => $req['payment_trxs'][$i],
                 "amount" => $req['payment_amounts'][$i],
-                "status" => 'success',
+                "status" => true,
             ]);
         }
 

@@ -159,7 +159,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Grand Total Amount($)</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" name="grand_total" value="00" disabled/>
+                                        <input type="number" class="form-control" id="grand_total" name="grand_total" value="00" disabled/>
                                     </div>
                                 </div>
 
@@ -338,33 +338,23 @@
             })
 
             // Update total sum when fee_amount changes
-            // $("tbody").on('input', '.fee_amount', function(){
-            //     let feeAmount = parseFloat($(this).val());
-
-            //     totalFeeAmount = 0;
-            //     $(".fee_amount").each(function(){
-            //         let value = parseFloat($(this).val());
-            //         if (!isNaN(value)) {
-            //             totalFeeAmount += value;
-            //         }
-            //     });
-
-            //     $("#total_fee").val(totalFeeAmount);
-            // });
-
-            // Update total sum when tax_rat changes
             $("tbody").on('input', '.fee_amount', function(){
-                let tax = parseFloat($(this).val());
-
-                totaltax = 0;
+                let feeAmount = parseFloat($(this).val());
+                totalFeeAmount = 0;
                 $(".fee_amount").each(function(){
                     let value = parseFloat($(this).val());
                     if (!isNaN(value)) {
-                        totaltax += value;
+                        totalFeeAmount += value;
                     }
                 });
+                $("#total_fee").val(totalFeeAmount);
 
-                $("#total_fee").val(totaltax);
+                let tax = parseFloat($(this).closest('tr').find('.tax_rat').val());
+                let taxAmount = Number((feeAmount*tax)/100).toFixed(2);
+                $(this).closest('tr').find('.tax_rat').attr('tax', taxAmount);
+
+                recalculateTotalTax();
+                recalculateGrandTotal();
             });
 
             // Update total sum when tax_rat changes
@@ -373,44 +363,26 @@
                 let tax = $(this).val();
                 let taxAmount = Number((feeAmount*tax)/100).toFixed(2);
                 $(this).attr('tax', taxAmount);
-                // console.log(feeAmount, tax, taxAmount);
+                recalculateTotalTax();
+                recalculateGrandTotal();
             });
 
-            $("tbody").on('input', '.fee_amount', function(){
-                let tax = Number($(this).val());
+            // Function to recalculate total tax
+            function recalculateTotalTax() {
 
                 let totaltax = 0;
                 $('.tax_rat').each(function(){
-                    console.log($(this).attr('tax'));
-                    let value = Number($(this).attr('tax'));
+                    let value = parseFloat($(this).attr('tax'));
                     if (!isNaN(value)) {
                         totaltax += value;
                     }
                 });
+                $("#total_tax").val(totaltax);
+            }
 
-                console.log("tax: -"+totaltax);
-            });
-
-
-            // Update total sum when tax_rat changes
-            // $("tbody").on('input', '.assign_room_amount', function(){
-            //     let oldTaxs = $(this).closest('tr').find('.assign_room_tax').attr('');
-
-            //     let amountValue = Number($(this).val());
-            //     let taxValue = Number($(this).closest('tr').find('.assign_room_tax').val());
-
-            //     let taxAmount = Number((amountValue*taxValue)/100).toFixed(0);
-
-            //     let oldAmount = $("#total_fee");
-            //     let totalTax = $("#total_tax");
-
-            //     console.log(taxAmount);
-            //     // oldAmount.val(Number(oldAmount.val())+amountValue);
-            //     totalTax.val(Number(totalTax.val())-oldTaxs.val());
-            //     totalTax.val(Number(Number(totalTax.val())+taxAmount).toFixed(2));
-
-            //     oldTaxs.val(taxAmount);
-            // });
+            function recalculateGrandTotal() {
+                $("#grand_total").val(Number(Number($("#total_tax").val()) + Number($("#total_fee").val())).toFixed(2));
+            }
 
         });
     </script>
